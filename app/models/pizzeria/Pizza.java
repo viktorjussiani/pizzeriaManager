@@ -8,13 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.db.jpa.JPA;
 
 @Entity
-@Table
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "id"}) })
 public class Pizza extends Model{
 
 	private static final long serialVersionUID = 1L;
@@ -56,7 +57,6 @@ public class Pizza extends Model{
 	public static List<Pizza> findAll() {
 		return JPA.em().createQuery("FROM Pizza ").getResultList();
 	}
-
 	
 	public Pizza clone() {
 		try {
