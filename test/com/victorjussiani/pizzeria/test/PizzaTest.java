@@ -1,4 +1,4 @@
-package com.victorjussiani.pizzeria;
+package com.victorjussiani.pizzeria.test;
 
 import models.pizzeria.Pizza;
 
