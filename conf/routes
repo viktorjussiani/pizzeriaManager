@@ -1,0 +1,12 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /pizzeria                      controllers.pizzeria.Pizzeria.index()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                  controllers.Assets.at(path="/public", file)
+
+#Generic Controller
+GET     /renderTemplate/*templatePath   controllers.pizzeria.global.GenericController.renderTemplate(templatePath : String)
