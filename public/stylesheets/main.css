@@ -1,0 +1,19 @@
+.title {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.widthAuto {
+	width: auto;
+}
+
+.filters ul.inline li {
+	width: auto;
+}
+
+#content {
+	width: 100%;
+	height: 100%;
+	padding-top: 30px;
+	padding-left: 30px;
+}

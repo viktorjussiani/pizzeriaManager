@@ -11,8 +11,8 @@ insert into Ingredient (id, name) values (6,'Bacon');
 insert into Ingredient (id, name) values (7,'Tomate');
 
 
-insert into Pizza (id, nome, value) values (1,'Calabresa', 19);
-insert into Pizza (id, nome, value) values (2,'Portugues', 19);
-insert into Pizza (id, nome, value) values (3,'Calabresa2', 19);
+insert into Pizza (id, name, value) values (1,'Calabresa', 19);
+insert into Pizza (id, name, value) values (2,'Portugues', 19);
+insert into Pizza (id, name, value) values (3,'Calabresa2', 19);
 
 

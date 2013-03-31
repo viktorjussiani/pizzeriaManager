@@ -3,12 +3,20 @@
 # ~~~~
 
 # Home page
-GET     /pizzeria                      com.victorjussiani.pizzeria.controllers.Pizzeria.index()
+GET     /pizzeria                      	com.victorjussiani.pizzeria.controllers.Pizzeria.index()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file                  controllers.Assets.at(path="/public", file)
+GET     /assets/*file                  	controllers.Assets.at(path="/public", file)
 
 #Generic Controller
 GET     /renderTemplate/*templatePath   com.victorjussiani.pizzeria.controllers.global.GenericController.renderTemplate(templatePath : String)
 
-GET 	/pizzeria/pizzas/getAll					com.victorjussiani.pizzeria.controllers.pizza.PizzaController.getAllPizzas()				
+#PizzaController
+GET 	/pizzeria/pizzas/getAll			com.victorjussiani.pizzeria.controllers.PizzaController.getAllPizzas()
+POST 	/pizzeria/pizzas/getById		com.victorjussiani.pizzeria.controllers.PizzaController.getPizzaById()
+POST 	/pizzeria/pizzas/getByName		com.victorjussiani.pizzeria.controllers.PizzaController.getIngredientByName()
+
+#IngredientController
+GET 	/pizzeria/ingredient/getAll		com.victorjussiani.pizzeria.controllers.IngredientController.getAllIngredients()
+POST 	/pizzeria/ingredient/getById	com.victorjussiani.pizzeria.controllers.IngredientController.getIngredientById()
+POST 	/pizzeria/ingredient/getByName	com.victorjussiani.pizzeria.controllers.IngredientController.getIngredientByName()				
