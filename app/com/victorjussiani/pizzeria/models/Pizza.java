@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -23,11 +24,17 @@ public class Pizza implements Cloneable{
 	
 	@Constraints.Required
 	@Column(nullable = false)
-	public String nome;
+	public String name;
 	
 	@Constraints.Required
 	@Column(nullable = false)
 	public Long value;
+	
+	@Constraints.Required
+	@Column(nullable = true)
+	@OneToMany
+	public List<Ingredient> ingredients;
+	
 	
 	public void save() {
 		if (this.id == null) {
@@ -41,9 +48,11 @@ public class Pizza implements Cloneable{
 		return JPA.em().find(Pizza.class, id);
 	}
 
-	public static Pizza findByMaxId() {
+	@SuppressWarnings("unchecked")
+	public static List<Pizza> findByName(String name) {
 		try {
-			return (Pizza) JPA.em().createQuery("SELECT p.id FROM Pizza p desc").setMaxResults(1).getSingleResult();
+			//TODO: Arrumar para LIKE
+			return  JPA.em().createQuery("SELECT * FROM Pizza WHERE name = pizzaName").setParameter("pizzaName", name).getResultList();
 		} catch (Exception e) {
 			return null;
 		}
@@ -91,30 +100,6 @@ public class Pizza implements Cloneable{
 
 	@Override
 	public String toString() {
-		return "Pizza [id=" + id + ", nome=" + nome + ", value=" + value + "]";
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public Long getValue() {
-		return value;
-	}
-
-	public void setValue(Long value) {
-		this.value = value;
+		return "Pizza [id=" + id + ", name=" + name + ", value=" + value + "]";
 	}
 }

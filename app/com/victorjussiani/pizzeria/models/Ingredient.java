@@ -1,6 +1,5 @@
 package com.victorjussiani.pizzeria.models;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,15 +11,12 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import play.data.validation.Constraints;
-import play.db.ebean.Model;
 import play.db.jpa.JPA;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"id"}) } )
-public class Ingredients extends Model{
+public class Ingredient implements Cloneable{
 	
-	private static final long serialVersionUID = -5637454138438861901L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -29,10 +25,6 @@ public class Ingredients extends Model{
 	@Column(nullable = false)
 	private String name;
 
-	@Constraints.Required
-	@Column(nullable = false)
-	private BigDecimal value;
-	
 	public void save() {
 		if (this.id == null) {
 			JPA.em().persist(this);
@@ -41,27 +33,28 @@ public class Ingredients extends Model{
 		}
 	}
 	
-	public static Ingredients findById(Long id) {
-		return JPA.em().find(Ingredients.class, id);
+	public static Ingredient findById(Long id) {
+		return JPA.em().find(Ingredient.class, id);
 	}
 
-	public static Ingredients findByMaxId() {
+	@SuppressWarnings("unchecked")
+	public static List<Ingredient> findByName(String name) {
 		try {
-			return (Ingredients) JPA.em().createQuery("SELECT p.id FROM Ingredients p desc").setMaxResults(1).getSingleResult();
+			//TODO: Arrumar para LIKE
+			return  JPA.em().createQuery("SELECT * FROM Ingredient WHERE name = ingredientName").setParameter("ingredientName", name).getResultList();
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Ingredients> findAll() {
+	public static List<Ingredient> findAll() {
 		return JPA.em().createQuery("FROM Ingredients ").getResultList();
 	}
 
 	@Override
 	public String toString() {
-		return "Ingredients [id=" + id + ", name=" + name + ", value=" + value
-				+ "]";
+		return "Ingredients [id=" + id + ", name=" + name + "]";
 	}
 	
 	@Override
@@ -80,7 +73,7 @@ public class Ingredients extends Model{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Ingredients other = (Ingredients) obj;
+		Ingredient other = (Ingredient) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -95,34 +88,9 @@ public class Ingredients extends Model{
 		try {
 			Object obj = super.clone();
 			if (obj != null)
-				return (Ingredients) obj;
+				return (Ingredient) obj;
 		} catch (CloneNotSupportedException e) {
 		}
 		return null;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public BigDecimal getValue() {
-		return value;
-	}
-
-	public void setValue(BigDecimal value) {
-		this.value = value;
-	}
-
 }
