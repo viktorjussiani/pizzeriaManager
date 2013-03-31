@@ -1,4 +1,4 @@
-package controllers.pizzeria;
+package com.victorjussiani.pizzeria.controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;

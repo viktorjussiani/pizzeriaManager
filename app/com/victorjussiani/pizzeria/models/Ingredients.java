@@ -1,4 +1,4 @@
-package models.pizzeria;
+package com.victorjussiani.pizzeria.models;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,25 +17,21 @@ import play.db.jpa.JPA;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"id"}) } )
-public class IngredientPizza extends Model{
-
-	private static final long serialVersionUID = -4288812439337359863L;
+public class Ingredients extends Model{
+	
+	private static final long serialVersionUID = -5637454138438861901L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Constraints.Required
+	@Column(nullable = false)
+	private String name;
 
 	@Constraints.Required
 	@Column(nullable = false)
-	private Pizza pizza;
-
-	@Constraints.Required
-	@Column(nullable = false)
-	private Ingredients ingredient;
-
-	@Constraints.Required
-	@Column(nullable = false)
-	private BigDecimal quantity;
+	private BigDecimal value;
 	
 	public void save() {
 		if (this.id == null) {
@@ -45,20 +41,29 @@ public class IngredientPizza extends Model{
 		}
 	}
 	
-	public static IngredientPizza findById(Long id) {
-		return JPA.em().find(IngredientPizza.class, id);
+	public static Ingredients findById(Long id) {
+		return JPA.em().find(Ingredients.class, id);
+	}
+
+	public static Ingredients findByMaxId() {
+		try {
+			return (Ingredients) JPA.em().createQuery("SELECT p.id FROM Ingredients p desc").setMaxResults(1).getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<IngredientPizza> findAll() {
-		return JPA.em().createQuery("FROM IngredientPizza ").getResultList();
+	public static List<Ingredients> findAll() {
+		return JPA.em().createQuery("FROM Ingredients ").getResultList();
+	}
+
+	@Override
+	public String toString() {
+		return "Ingredients [id=" + id + ", name=" + name + ", value=" + value
+				+ "]";
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static List<IngredientPizza> findIngredientsByPizza(Long pizzaId){
-		return JPA.em().createQuery("FROM IngredientPizza ip WHERE ip.pizza.id = pizzaID").setParameter("pizzaID", pizzaId).getResultList();
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -75,7 +80,7 @@ public class IngredientPizza extends Model{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IngredientPizza other = (IngredientPizza) obj;
+		Ingredients other = (Ingredients) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -84,10 +89,16 @@ public class IngredientPizza extends Model{
 		return true;
 	}
 
+
 	@Override
-	public String toString() {
-		return "IngredientPizza [id=" + id + ", pizza=" + pizza
-				+ ", ingredient=" + ingredient + ", quantity=" + quantity + "]";
+	protected Object clone() {
+		try {
+			Object obj = super.clone();
+			if (obj != null)
+				return (Ingredients) obj;
+		} catch (CloneNotSupportedException e) {
+		}
+		return null;
 	}
 
 	public Long getId() {
@@ -98,27 +109,20 @@ public class IngredientPizza extends Model{
 		this.id = id;
 	}
 
-	public Pizza getPizza() {
-		return pizza;
+	public String getName() {
+		return name;
 	}
 
-	public void setPizza(Pizza pizza) {
-		this.pizza = pizza;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Ingredients getIngredient() {
-		return ingredient;
+	public BigDecimal getValue() {
+		return value;
 	}
 
-	public void setIngredient(Ingredients ingredient) {
-		this.ingredient = ingredient;
+	public void setValue(BigDecimal value) {
+		this.value = value;
 	}
 
-	public BigDecimal getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity;
-	}
 }

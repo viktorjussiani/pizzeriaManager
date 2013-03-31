@@ -1,6 +1,5 @@
-package models.pizzeria;
+package com.victorjussiani.pizzeria.models;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,26 +11,23 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import play.data.validation.Constraints;
-import play.db.ebean.Model;
 import play.db.jpa.JPA;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"id"}) } )
-public class Ingredients extends Model{
-	
-	private static final long serialVersionUID = -5637454138438861901L;
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"id"}) })
+public class Pizza implements Cloneable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	public Long id;
 	
 	@Constraints.Required
 	@Column(nullable = false)
-	private String name;
-
+	public String nome;
+	
 	@Constraints.Required
 	@Column(nullable = false)
-	private BigDecimal value;
+	public Long value;
 	
 	public void save() {
 		if (this.id == null) {
@@ -41,29 +37,33 @@ public class Ingredients extends Model{
 		}
 	}
 	
-	public static Ingredients findById(Long id) {
-		return JPA.em().find(Ingredients.class, id);
+	public static Pizza findById(Long id) {
+		return JPA.em().find(Pizza.class, id);
 	}
 
-	public static Ingredients findByMaxId() {
+	public static Pizza findByMaxId() {
 		try {
-			return (Ingredients) JPA.em().createQuery("SELECT p.id FROM Ingredients p desc").setMaxResults(1).getSingleResult();
+			return (Pizza) JPA.em().createQuery("SELECT p.id FROM Pizza p desc").setMaxResults(1).getSingleResult();
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Ingredients> findAll() {
-		return JPA.em().createQuery("FROM Ingredients ").getResultList();
-	}
-
-	@Override
-	public String toString() {
-		return "Ingredients [id=" + id + ", name=" + name + ", value=" + value
-				+ "]";
+	public static List<Pizza> findAll() {
+		return JPA.em().createQuery("FROM Pizza ").getResultList();
 	}
 	
+	public Pizza clone() {
+		try {
+			Object obj = super.clone();
+			if (obj != null)
+				return (Pizza) obj;
+		} catch (CloneNotSupportedException e) {
+		}
+		return null;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -80,7 +80,7 @@ public class Ingredients extends Model{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Ingredients other = (Ingredients) obj;
+		Pizza other = (Pizza) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -89,18 +89,11 @@ public class Ingredients extends Model{
 		return true;
 	}
 
-
 	@Override
-	protected Object clone() {
-		try {
-			Object obj = super.clone();
-			if (obj != null)
-				return (Ingredients) obj;
-		} catch (CloneNotSupportedException e) {
-		}
-		return null;
+	public String toString() {
+		return "Pizza [id=" + id + ", nome=" + nome + ", value=" + value + "]";
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -109,20 +102,19 @@ public class Ingredients extends Model{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public BigDecimal getValue() {
+	public Long getValue() {
 		return value;
 	}
 
-	public void setValue(BigDecimal value) {
+	public void setValue(Long value) {
 		this.value = value;
 	}
-
 }

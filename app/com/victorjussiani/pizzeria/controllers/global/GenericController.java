@@ -1,4 +1,4 @@
-package controllers.pizzeria.global;
+package com.victorjussiani.pizzeria.controllers.global;
 
 import java.lang.reflect.Method;
 
